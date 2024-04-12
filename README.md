@@ -2,7 +2,6 @@
 A simple deployment of Postgres using Kubernetes for development and testing purposes.
 
 ## Prerequisites
-- [Docker Engine](https://docs.docker.com/engine/install/)
 - [`kubectl` CLI](https://kubernetes.io/docs/tasks/tools/)
 - Local Kubernetes cluster
   - [Docker Desktop Kubernetes](https://docs.docker.com/desktop/kubernetes/)
