@@ -7,23 +7,23 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 DEPLOYMENT_DIR=${SCRIPT_DIR}/deployments
 
 usage() {
-	printf "Usage:\n"
-	printf "  help\t\tShow this help\n"
-	printf "\n"
-	printf "  expose\tExpose the service. Port defaults to 5432 if not specified\n"
-	printf "\n"
-	printf "  logs\t\tSee logs\n"
-	printf "\n"
-	printf "  psql\t\tConnect to the DB\n"
-	printf "\n"
-	printf "  pvc\t\tDeploy PVC\n"
-	printf "\n"
-	printf "  up | down\tDeploy or destroy the service \n"
-	printf "\n"
+    printf "Usage:\n"
+    printf "  help\t\tShow this help\n"
+    printf "\n"
+    printf "  expose\tExpose the service. Port defaults to 5432 if not specified\n"
+    printf "\n"
+    printf "  logs\t\tSee logs\n"
+    printf "\n"
+    printf "  psql\t\tConnect to the DB\n"
+    printf "\n"
+    printf "  pvc\t\tDeploy PVC\n"
+    printf "\n"
+    printf "  up | down\tDeploy or destroy the service \n"
+    printf "\n"
 }
 
 connect() {
-	kubectl exec postgres-0 -it -- sh -c "PGPASSWORD=postgres psql -U user -d db"
+    kubectl exec postgres-0 -it -- sh -c "PGPASSWORD=postgres psql -U user -d db"
 }
 
 deploy_pvc() {
@@ -31,45 +31,45 @@ deploy_pvc() {
 }
 
 deploy_or_destroy_db() {
-	local action="$1"
+    local action="$1"
 
     [[ -z "$action" ]] && printf "Error: action (e.g. up, down) can't be empty.\n" && exit 1
 
-	if [[ "$action" == "up" ]]; then
-		kubectl apply -f ${DEPLOYMENT_DIR}/db.yaml
-	elif [[ "$action" == "down" ]]; then
-		kubectl delete -f ${DEPLOYMENT_DIR}/db.yaml
-	fi
+    if [[ "$action" == "up" ]]; then
+        kubectl apply -f ${DEPLOYMENT_DIR}/db.yaml
+    elif [[ "$action" == "down" ]]; then
+        kubectl delete -f ${DEPLOYMENT_DIR}/db.yaml
+    fi
     kubectl get pods
 }
 
 expose(){
-	local port="${1-:5432}"
+    local port="${1-:5432}"
 
-	kubectl port-forward statefulset/postgres ${port}:5432
+    kubectl port-forward statefulset/postgres ${port}:5432
 }
 
 log() {
-	kubectl logs -f postgres-0
+    kubectl logs -f postgres-0
 }
 
 case "$1" in
-	expose)
-		expose "${@:2}"
-		;;
-	logs)
-		log
-		;;
-	psql)
-		connect "${@:2}"
-		;;
-	pvc)
-		deploy_pvc "${@:2}"
-		;;
-	up | down)
-		deploy_or_destroy_db "${@:1}"
-		;;
-	* | -h | help)
-		usage
-		;;
+    expose)
+        expose "${@:2}"
+        ;;
+    logs)
+        log
+        ;;
+    psql)
+        connect "${@:2}"
+        ;;
+    pvc)
+        deploy_pvc "${@:2}"
+        ;;
+    up | down)
+        deploy_or_destroy_db "${@:1}"
+        ;;
+    * | -h | help)
+        usage
+        ;;
 esac
