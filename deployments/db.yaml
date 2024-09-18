@@ -4,8 +4,8 @@ kind: ConfigMap
 metadata:
   name: postgres-config
 data:
-  POSTGRES_DB: db
-  POSTGRES_USER: user
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
   # Add any additional configuration options as needed
 
 ---
